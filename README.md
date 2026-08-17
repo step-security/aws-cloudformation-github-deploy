@@ -11,7 +11,7 @@ Deploys AWS CloudFormation Stacks.
 
 ```yaml
 - name: Deploy to AWS CloudFormation
-  uses: step-security/aws-cloudformation-github-deploy@v2.0.0
+  uses: step-security/aws-cloudformation-github-deploy@v2
   with:
     name: MyStack
     template: myStack.yaml
@@ -28,7 +28,7 @@ This action supports three modes of operation for better change set management:
 
 ```yaml
 - name: Deploy CloudFormation Stack
-  uses: step-security/aws-cloudformation-github-deploy@v2.0.0
+  uses: step-security/aws-cloudformation-github-deploy@v2
   with:
     name: MyStack
     template: myStack.yaml
@@ -39,7 +39,7 @@ This action supports three modes of operation for better change set management:
 ```yaml
 - name: Create Change Set for Review
   id: create-changeset
-  uses: step-security/aws-cloudformation-github-deploy@v2.0.0
+  uses: step-security/aws-cloudformation-github-deploy@v2
   with:
     mode: 'create-only'
     name: MyStack
@@ -58,7 +58,7 @@ This action supports three modes of operation for better change set management:
 
 ```yaml
 - name: Execute Change Set
-  uses: step-security/aws-cloudformation-github-deploy@v2.0.0
+  uses: step-security/aws-cloudformation-github-deploy@v2
   with:
     mode: 'execute-only'
     name: MyStack
@@ -71,7 +71,7 @@ Create change sets that can revert resource drift:
 
 ```yaml
 - name: Create Drift-Reverting Change Set
-  uses: step-security/aws-cloudformation-github-deploy@v2.0.0
+  uses: step-security/aws-cloudformation-github-deploy@v2
   with:
     mode: 'create-only'
     name: MyStack
@@ -102,17 +102,17 @@ jobs:
   review-changes:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: step-security/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
       - name: Create change set for PR review
         id: create-cs
-        uses: step-security/aws-cloudformation-github-deploy@v2.0.0
+        uses: step-security/aws-cloudformation-github-deploy@v2
         with:
           mode: 'create-only'
           name: pr-review-${{ github.event.pull_request.number }}
@@ -218,7 +218,7 @@ Override parameters using a local JSON file: `"file:///${{ github.workspace }}/p
 ## Credentials and Region
 
 This action relies on the [default behavior of the AWS SDK for Javascript](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html) to determine AWS credentials and region.
-Use [the `aws-actions/configure-aws-credentials` action](https://github.com/aws-actions/configure-aws-credentials) to configure the GitHub Actions environment with environment variables containing AWS credentials and your desired region.
+Use [the `step-security/configure-aws-credentials` action](https://github.com/step-security/configure-aws-credentials) to configure the GitHub Actions environment with environment variables containing AWS credentials and your desired region.
 
 We recommend following [Amazon IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) for the AWS credentials used in GitHub Actions workflows, including:
 
@@ -320,11 +320,11 @@ jobs:
       env-name: ${{ steps.env-name.outputs.environment }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
 
       - name: Configure AWS credentials
         id: creds
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: step-security/configure-aws-credentials@v6
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -341,7 +341,7 @@ jobs:
 
       - name: Deploy Amazon EKS Cluster
         id: eks-cluster
-        uses: step-security/aws-cloudformation-github-deploy@master
+        uses: step-security/aws-cloudformation-github-deploy@v2
         with:
           name: ${{ steps.env-name.outputs.environment }}-cluster
           template: https://s3.amazonaws.com/aws-quickstart/quickstart-amazon-eks/templates/amazon-eks-master.template.yaml
@@ -366,7 +366,7 @@ Additionally this action will always consider already configured proxy in the en
 Manually configured proxy:
 
 ```yaml
-uses: step-security/aws-cloudformation-github-deploy@v2.0.0
+uses: step-security/aws-cloudformation-github-deploy@v2
 with:
   name: eks-primary
   template: https://s3.amazonaws.com/aws-quickstart/quickstart-amazon-eks/templates/amazon-eks-master.template.yaml

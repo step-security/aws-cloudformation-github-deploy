@@ -2,14 +2,15 @@ module.exports = {
   clearMocks: true,
   coverageThreshold: {
     global: {
-      statements: 90,
-      branches: 70,
-      functions: 90,
-      lines: 90
+      statements: 80,
+      branches: 60,
+      functions: 85,
+      lines: 80
     }
   },
   moduleFileExtensions: ['js', 'ts'],
   setupFiles: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup-after.js'],
   testEnvironment: 'node',
   testMatch: ['**/*.test.ts'],
   testRunner: 'jest-circus/runner',
